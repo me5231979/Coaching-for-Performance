@@ -20,6 +20,7 @@ by_id = {sec['id']: sec for sec in notes['sections']}
 s = s.replace('href="assets/', 'href="../assets/')
 s = s.replace('src="assets/', 'src="../assets/')
 s = s.replace('href="cheatsheet.html"', 'href="../cheatsheet.html"')
+s = s.replace('href="worksheet.html"', 'href="../worksheet.html"')
 
 # ---- 2. head: title, noindex, no canonical/og confusion ----
 s = s.replace('<title>Coaching for Performance | Vanderbilt</title>',
