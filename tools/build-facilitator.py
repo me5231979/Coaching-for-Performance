@@ -46,8 +46,9 @@ s = s.replace('''    <img class="nav__vicon" src="../assets/img/vu-v-icon-nav.pn
 def rail(sec):
     def esc(t): return html.escape(t, quote=False)
     parts = [
-        f'<div class="facnote__head"><span>Facilitator</span>'
-        f'<span>Full {sec.get("minutes","–")} min · Core {sec.get("coreMinutes","–") or "skip"}</span></div>',
+        f'<div class="facnote__head"><span>Facilitator script</span>'
+        f'<span class="facnote__time">Full {sec.get("minutes","–")} min · Core {sec.get("coreMinutes","–") or "skip"}</span>'
+        f'<button class="facnote__hide" type="button" aria-label="Hide the facilitator script">Hide</button></div>',
         f'<p class="facnote__purpose">{esc(sec.get("purpose",""))}</p>',
     ]
     if sec.get('say'):
@@ -170,9 +171,46 @@ FAC_CSS = '''
 .brief__q { border-bottom: 1px solid rgba(255,255,255,.08); padding: .4rem 0; }
 .brief__q summary { cursor: pointer; font-weight: 500; color: #fff; }
 .brief__q p { margin: .4rem 0 .2rem; color: rgba(255,255,255,.8); font-size: .9rem; }
+/* hide/show the facilitator script */
+.facnote__hide { font-family: var(--font-body, Inter, sans-serif); font-weight: 600; font-size: .72rem;
+  color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 5px; padding: .3rem .7rem; cursor: pointer; text-transform: none; letter-spacing: 0; }
+.facnote__hide:hover { border-color: var(--vu-gold-flat); }
+body.fac-hide .facnote { display: none !important; }
+@media (min-width: 1200px) { body.fac.fac-hide .slide { grid-template-columns: 1fr; } }
+.facshow { position: fixed; right: clamp(14px, 2vw, 28px); top: calc(var(--nav-h) + 14px); z-index: 96;
+  display: none; align-items: center; gap: .45rem;
+  font-family: var(--font-condensed); font-weight: 700; text-transform: uppercase;
+  letter-spacing: .09em; font-size: .68rem; color: var(--vu-gold-flat);
+  background: rgba(20,20,20,.92); border: 1px solid rgba(207,174,112,.45); border-radius: 4px;
+  padding: .5rem .75rem; cursor: pointer; }
+body.fac-hide .facshow { display: inline-flex; }
 </style>
+
 '''
 s = s.replace('</head>', FAC_CSS + '</head>')
+
+FAC_JS = """
+<script>
+(function () {
+  var KEY = 'facScriptHidden';
+  var show = document.createElement('button');
+  show.className = 'facshow'; show.type = 'button';
+  show.textContent = 'Show facilitator script';
+  document.body.appendChild(show);
+  function set(h) {
+    document.body.classList.toggle('fac-hide', h);
+    try { localStorage.setItem(KEY, h ? '1' : '0'); } catch (e) {}
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.facnote__hide')) set(true);
+  });
+  show.addEventListener('click', function () { set(false); });
+  try { if (localStorage.getItem(KEY) === '1') set(true); } catch (e) {}
+})();
+</script>
+"""
+s = s.replace('</body>', FAC_JS + '</body>')
 
 # ---- 7. footer marker ----
 s = s.replace('Coaching for Performance · A Vanderbilt learning experience',
