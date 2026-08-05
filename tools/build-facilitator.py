@@ -212,6 +212,8 @@ for x in gsecs:
     core = x.get('coreMinutes')
     sec_html += f"""
   <div class="sec">
+    <div class="sec__shot"><img src="img/{x['id']}.jpg" alt="Slide: {_g(x['title'])}" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>{_g(x['title'])} <span class="mins">Full {x.get('minutes','–')} min · Core {core if core else 'skip'}</span></h2>
     <p class="purpose">{_g(x.get('purpose',''))}</p>
     {'<p class="tagline say">Say</p><p class="script">&ldquo;' + _g(x['say']) + '&rdquo;</p>' if x.get('say') else ''}
@@ -222,6 +224,7 @@ for x in gsecs:
     {'<p class="mini"><b>Watch for:</b> ' + _g(x['watchFor']) + '</p>' if x.get('watchFor') else ''}
     {'<p class="mini"><b>Transition:</b> &ldquo;' + _g(x['transition']) + '&rdquo;</p>' if x.get('transition') else ''}
     {'<p class="mini core"><b>Core path:</b> ' + _g(x['coreNote']) + '</p>' if x.get('coreNote') else ''}
+    </div>
   </div>"""
 
 guide = f"""<!DOCTYPE html>
@@ -258,7 +261,15 @@ guide = f"""<!DOCTYPE html>
   .mins {{ font-family: 'Antonio', Impact, sans-serif; font-size: 11px; color: #946E24;
     letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }}
   .sec {{ border: 1px solid #E4E4E4; border-left: 3px solid #CFAE70; border-radius: 4px;
-    padding: 12px 16px; margin-bottom: 12px; break-inside: avoid; }}
+    padding: 12px 16px; margin-bottom: 12px; break-inside: avoid;
+    display: grid; grid-template-columns: 290px 1fr; gap: 16px; align-items: start; }}
+  .sec.noimg {{ grid-template-columns: 1fr; }}
+  .sec.noimg .sec__shot {{ display: none; }}
+  .sec__shot {{ position: sticky; top: 12px; }}
+  .sec__shot img {{ width: 100%; border: 1px solid #E4E4E4; border-radius: 3px; display: block; }}
+  .sec__notes {{ min-width: 0; }}
+  @media (max-width: 700px) {{ .sec {{ grid-template-columns: 1fr; }} .sec__shot {{ position: static; max-width: 340px; }} }}
+  @media print {{ .sec {{ grid-template-columns: 240px 1fr; }} .sec__shot {{ position: static; }} }}
   .purpose {{ font-weight: 600; margin: 2px 0 8px; }}
   .tagline {{ font-family: 'Antonio', Impact, sans-serif; font-weight: 700; text-transform: uppercase;
     letter-spacing: .08em; font-size: 10px; margin: 10px 0 2px; color: #1C1C1C;

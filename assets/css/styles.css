@@ -773,3 +773,6 @@ body { overflow: hidden; }
 .scrollhint svg { display: block; }
 @keyframes hintPulse { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 @media (prefers-reduced-motion: reduce) { .scrollhint.show { animation: none; } }
+
+/* solid top bar on every slide */
+.nav { background: rgba(20,20,20,.97); border-bottom: 1px solid rgba(207,174,112,.18); }

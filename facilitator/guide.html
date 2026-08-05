@@ -32,7 +32,15 @@
   .mins { font-family: 'Antonio', Impact, sans-serif; font-size: 11px; color: #946E24;
     letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
   .sec { border: 1px solid #E4E4E4; border-left: 3px solid #CFAE70; border-radius: 4px;
-    padding: 12px 16px; margin-bottom: 12px; break-inside: avoid; }
+    padding: 12px 16px; margin-bottom: 12px; break-inside: avoid;
+    display: grid; grid-template-columns: 290px 1fr; gap: 16px; align-items: start; }
+  .sec.noimg { grid-template-columns: 1fr; }
+  .sec.noimg .sec__shot { display: none; }
+  .sec__shot { position: sticky; top: 12px; }
+  .sec__shot img { width: 100%; border: 1px solid #E4E4E4; border-radius: 3px; display: block; }
+  .sec__notes { min-width: 0; }
+  @media (max-width: 700px) { .sec { grid-template-columns: 1fr; } .sec__shot { position: static; max-width: 340px; } }
+  @media print { .sec { grid-template-columns: 240px 1fr; } .sec__shot { position: static; } }
   .purpose { font-weight: 600; margin: 2px 0 8px; }
   .tagline { font-family: 'Antonio', Impact, sans-serif; font-weight: 700; text-transform: uppercase;
     letter-spacing: .08em; font-size: 10px; margin: 10px 0 2px; color: #1C1C1C;
@@ -81,6 +89,8 @@
   </div>
 
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-welcome.jpg" alt="Slide: Welcome / QR" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Welcome / QR <span class="mins">Full 3 min · Core 2</span></h2>
     <p class="purpose">Get every learner into the experience on their own device, and set the practice norms: real topics, low stakes, roles not names.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Welcome. Point your camera at that code before we start. Today you will coach, and you will be coached, on real work topics you choose. Ground rules: keep your practice topics low-stakes, use roles instead of names, and everything you type stays on your screen.&rdquo;</p>
@@ -91,8 +101,11 @@
     <p class="mini"><b>Watch for:</b> Anyone without a device: pair them with a neighbor now and hand them a printed worksheet for the private exercises.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Everyone in? Then here's the promise of the next hour.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: one scan prompt, state the norms, move on.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-hero.jpg" alt="Slide: Objectives" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Objectives <span class="mins">Full 2 min · Core 1</span></h2>
     <p class="purpose">Set the contract: five capabilities, ending in a real coaching conversation with a date and a written opening question.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;You were promoted because you were good at the work, which means you're carrying a habit: when someone brings you a problem, you solve it. Google studied ten thousand of its own managers to find what the best ones do, and the answer wasn't faster solving. By the end of this hour you'll have a coaching structure, a bank of questions that actually work, and one real conversation planned with a date on it.&rdquo;</p>
@@ -103,8 +116,11 @@
     <p class="mini"><b>Watch for:</b> The 'soft skills' eye-roll. The counter is on the slide: this is the number one behavior in the largest manager study ever run.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Seven ideas get us there. Here's the road.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: objectives 2 and 5 out loud; the rest on screen.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-agenda.jpg" alt="Slide: Agenda" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Agenda <span class="mins">Full 1 min · Core skip</span></h2>
     <p class="purpose">Show the arc once so learners can place each tool as it arrives.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Four moves: why coaching wins, the craft of it, the judgment of when to use it, and your plan to run one this week.&rdquo;</p>
@@ -115,8 +131,11 @@
     <p class="mini"><b>Watch for:</b> Don't teach here; every framework has its own slide.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Start with the evidence, because 'be a coach' is advice, and data is a reason.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: skip entirely; the deck's structure carries it.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-case.jpg" alt="Slide: 01 · The case for coaching" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>01 · The case for coaching <span class="mins">Full 9 min · Core 5</span></h2>
     <p class="purpose">Establish the research case (Project Oxygen, McKinsey) and capture each learner's private baseline coaching ratio for the 30-day measure.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Google ran the largest study of managers ever done inside one company: Project Oxygen. They ranked what their highest-rated managers actually do. Number one was not technical depth, not decisiveness. It was: is a good coach. McKinsey found the same shift in leaders everywhere, from controller, who has the answers, to coach, who leads with discovery. Before we build the skill, take your own baseline: of your last five one-on-ones, in how many did THEY do the discovering?&rdquo;</p>
@@ -127,8 +146,11 @@
     <p class="mini"><b>Watch for:</b> Ratio inflation. Frame it kindly before they slide: 'coaching means THEY discovered; if you gave the answer nicely, that's telling.'</p>
     <p class="mini"><b>Transition:</b> &ldquo;So why isn't everyone coaching already? Because of how managers get made.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: keep the slider and check; cut the video (assign as follow-up) and the pair share.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-belief.jpg" alt="Slide: Manifesto" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Manifesto <span class="mins">Full 1 min · Core skip</span></h2>
     <p class="purpose">One beat of stillness to lock the core idea before the toolkit starts.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;A manager's answer solves today. A manager's question builds tomorrow.&rdquo;</p>
@@ -139,8 +161,11 @@
     <p class="mini"><b>Watch for:</b> The urge to talk over it. Don't.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Here's why the answer keeps winning anyway.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: skip; say the line yourself as you pass it.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-default.jpg" alt="Slide: 02 · Your telling default" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>02 · Your telling default <span class="mins">Full 8 min · Core 5</span></h2>
     <p class="purpose">Name the telling default without shame, give it Goleman's vocabulary, and have each learner catch it in real manager language.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Here's the trap nobody warns new managers about. You got this job by being excellent at solving problems, so when someone brings you one, every instinct you were promoted for says: solve it. Daniel Goleman's research names the styles. Directing hands over the answer. Pacesetting takes the work back and does it better. Coaching asks, and builds the person who won't need to ask next time. Under pressure, almost everyone drops to the first two.&rdquo;</p>
@@ -151,8 +176,11 @@
     <p class="mini"><b>Watch for:</b> Guilt spirals. Reframe fast: the default is trained, not a character flaw, and it's correct in plenty of situations. Section 07 gives it a legal home.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Retraining starts with a structure. Four letters, used by more coaches than any other model on earth.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: teach the cards fast, run the trainer, keep the written moment. Skip the Goleman video link mention.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-grow.jpg" alt="Slide: 03 · The GROW conversation" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>03 · The GROW conversation <span class="mins">Full 16 min · Core 12</span></h2>
     <p class="purpose">Install GROW as the conversation spine, feel it work in the simulator, then run it live in the no-advice pair roleplay: the session's core rep.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;GROW is the most widely used coaching structure in the world, and it's the one Google teaches its own managers. Goal: what do they want from this conversation, in their words. Reality: what's actually happening, explored, not diagnosed. Options: what could they do, and the magic words are 'what else,' asked three times, because the fourth idea usually beats the first. Will: what will they do, by when, and how committed, one to ten. Under an eight, the plan isn't theirs yet. You're about to run one against Jordan, who is having a rough quarter.&rdquo;</p>
@@ -163,8 +191,11 @@
     <p class="mini"><b>Watch for:</b> Coaches slipping into advice inside 60 seconds; it will happen and it IS the lesson. Also watch Options getting one answer: prompt 'what else?' from the front if you hear pairs stalling.</p>
     <p class="mini"><b>Transition:</b> &ldquo;The structure is easy to remember and hard to execute, because your questions keep trying to smuggle answers. Let's fix the questions themselves.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: cut the video; keep the simulator (it's fast) and ONE direction of the roleplay, no swap.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-questions.jpg" alt="Slide: 04 · Powerful questions" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>04 · Powerful questions <span class="mins">Full 9 min · Core 6</span></h2>
     <p class="purpose">Install the ICF's three tests (open, clean, theirs) and train the ear to catch advice wearing a question mark.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;The International Coaching Federation calls the real thing a powerful question, and it has three tests. Open: can't be answered yes or no. Clean: your answer isn't hiding inside it. Theirs: it aims at their thinking, not your curiosity. Most manager questions fail test two. 'Have you tried delegating more?' isn't a question; it's advice with a question mark, and everyone in the room hears the difference. Then, after you ask a real one: silence. Six seconds. The discomfort you feel is them thinking.&rdquo;</p>
@@ -175,8 +206,11 @@
     <p class="mini"><b>Watch for:</b> Questions that pass 'open' but fail 'clean': 'what do you think about talking to them directly?' is still smuggling. Use the room's examples to show it.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Questions coach the present. The next tool coaches the future, and it removes the single biggest source of defensiveness: the past.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: converter plus the six-second rule; the own-advice conversion moves into the capstone.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-feedforward.jpg" alt="Slide: 05 · Feedforward" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>05 · Feedforward <span class="mins">Full 12 min · Core 8</span></h2>
     <p class="purpose">Run Goldsmith's Feedforward exchange live in triads: the session's highest-energy rep and the tool learners reuse with their teams the same week.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Marshall Goldsmith coaches CEOs, and this is his signature move. Feedback looks backward at what went wrong, and people defend the past because they can't change it. Feedforward flips it: name one behavior you want to improve, collect suggestions about NEXT time, and respond to every one with exactly two words: thank you. No explaining, no defending, no 'that wouldn't work here.' You are about to feel how different input lands when nobody is judging history.&rdquo;</p>
@@ -187,8 +221,11 @@
     <p class="mini"><b>Watch for:</b> Triads negotiating instead of receiving ('yeah but the reason I do that is...'). The 'thank you' rule is the exercise; guard it. Also watch the leftover pair; give them the two-suggestion variant.</p>
     <p class="mini"><b>Transition:</b> &ldquo;You now have a structure, sharper questions, and a future-focused exchange. Time to make the toolkit yours: which structure fits YOU?&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: cut the video and classifier debrief; one triad rotation instead of three. The live exchange survives every cut.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-models.jpg" alt="Slide: 06 · Choose your model" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>06 · Choose your model <span class="mins">Full 7 min · Core 3</span></h2>
     <p class="purpose">Position CLEAR and OSKAR beside GROW and have each learner choose a structure on purpose, a rehearsal for the capstone.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;GROW is the default for a reason, but two alternatives earn their place. CLEAR, Contract, Listen, Explore, Action, Review, starts with an explicit agreement: what do you want from these sessions, and from me? Perfect for an ongoing coaching relationship. OSKAR is solution-focused: Outcome, Scaling, Know-how, Affirm and Action, Review. For the person who has analyzed the problem to death, 'you're at a four; what's keeping it from being a two?' points them at what's already working. Pick the one that sounds like your voice.&rdquo;</p>
@@ -199,8 +236,11 @@
     <p class="mini"><b>Watch for:</b> Analysis paralysis. The escape line: 'When in doubt, GROW. You can switch models later; you can't switch not-having-the-conversation.'</p>
     <p class="mini"><b>Transition:</b> &ldquo;One more piece of judgment before you build the plan: the times when coaching is the WRONG call.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: cards in one minute, matcher on devices, skip the pair share; the capstone captures the choice.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-when.jpg" alt="Slide: 07 · When NOT to coach" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>07 · When NOT to coach <span class="mins">Full 6 min · Core 4</span></h2>
     <p class="purpose">Install situational judgment (Ibarra &amp; Scoular) so the new coaching habit doesn't overcorrect into coaching fire alarms.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Now the guardrail. Coaching is a tool, not a religion. When there's a fire, you point at the door; you don't ask 'what options do you see?' Direct when there's a genuine emergency, when compliance leaves no discretion, when someone is brand new, or when the decision is honestly yours. Coach when they're capable and would grow, when the same problem keeps returning to your desk, when there's more than one right answer. The skill is matching the mode to the moment, and then defaulting to coach, because your ratio is currently backwards.&rdquo;</p>
@@ -211,8 +251,11 @@
     <p class="mini"><b>Watch for:</b> The convenient conclusion that most of their directing was justified. Push gently: 'If the same problem has come back three times, it wasn't a directing moment.'</p>
     <p class="mini"><b>Transition:</b> &ldquo;Toolkit complete. Let's check what stuck, then aim it at a real person.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: lists plus quick check; the reclassification happens inside the capstone.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-recap.jpg" alt="Slide: Recap quiz" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Recap quiz <span class="mins">Full 4 min · Core 4</span></h2>
     <p class="purpose">Score the session's knowledge against the objectives before the capstone applies it (Kirkpatrick Level 2).</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Six questions, one per tool. This isn't a grade; it's a check on what's loaded before you aim it at a real conversation.&rdquo;</p>
@@ -223,8 +266,11 @@
     <p class="mini"><b>Watch for:</b> Racing. Frame it as a mirror, not a race; the real test is a human on their calendar this week.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Now the reason we're here. One real person, one model, one opening question, one date.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: keep at full length; this is the objectives' evidence.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-plan.jpg" alt="Slide: Capstone · My coaching plan" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Capstone · My coaching plan <span class="mins">Full 8 min · Core 7</span></h2>
     <p class="purpose">Convert the session into one dated, planned coaching conversation with a written opening question: the transfer artifact and Level 3 seed.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;You've carried one person through this session: the one you keep solving for. Time to give them a better manager. Pick your model, write the opening question in your own words, name your telling trap and its counter-move, and put a date on it inside the next seven days. Then two things that make it real: send the calendar invite before you leave this room, and tell one colleague which model you're using.&rdquo;</p>
@@ -235,8 +281,11 @@
     <p class="mini"><b>Watch for:</b> Learners picking their easiest report instead of the one who'd benefit most. Nudge once: 'Pick the person you've been solving FOR the most.' Also: anyone whose situation involves formal performance processes gets routed to HR first.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Reference material in one breath, then the send-off.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: protect at full length minus one minute of framing. Never cut the capstone.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-glossary.jpg" alt="Slide: Glossary" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Glossary <span class="mins">Full 1 min · Core skip</span></h2>
     <p class="purpose">Signpost the reference layer; it lives here for after the session.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Every term from today lives here, flip cards, whenever you need them back. It'll still be here the morning of your conversation.&rdquo;</p>
@@ -247,8 +296,11 @@
     <p class="mini"><b>Watch for:</b> Don't tour all twelve cards; one flip makes the point.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Last slide. One question left to ask.&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: skip; point at it verbally from the closing slide.</p>
+    </div>
   </div>
   <div class="sec">
+    <div class="sec__shot"><img src="img/s-close.jpg" alt="Slide: Closing · commitment" onerror="this.closest('.sec').classList.add('noimg')"></div>
+    <div class="sec__notes">
     <h2>Closing · commitment <span class="mins">Full 3 min · Core 3</span></h2>
     <p class="purpose">Convert plans into public commitments, capture the Level 1 reaction check, and close the loop on the one next step.</p>
     <p class="tagline say">Say</p><p class="script">&ldquo;Here's the whole session in one breath: the best managers ask, the structure is GROW, the questions are open and clean, the input is feedforward, and the judgment is matching the mode to the moment. You have a model, an opening question, and a date. Before you go: which model, and which day? Say it out loud.&rdquo;</p>
@@ -259,6 +311,7 @@
     <p class="mini"><b>Watch for:</b> Commitment dodges ('when things calm down'). Convert one or two gently: 'Which day?' Things never calm down; calendars do.</p>
     <p class="mini"><b>Transition:</b> &ldquo;Go ask the question. And when their answer surprises you, and it will, say the two words: what else?&rdquo;</p>
     <p class="mini core"><b>Core path:</b> Core: keep at full length; the commitment round IS the ending.</p>
+    </div>
   </div>
   <p class="mini" style="margin-top:14px;color:#777">Generated from facilitator/notes.json. The on-screen facilitator edition lives at ./ alongside this guide.</p>
 </div>
