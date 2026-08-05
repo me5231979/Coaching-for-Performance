@@ -102,7 +102,8 @@ briefing = f"""  <section class="slide on-dark" id="s-briefing" data-title="Faci
     <div class="wrap wrap-wide">
       <p class="eyebrow">Facilitator briefing · Read before you teach</p>
       <h2 class="h2">Run this <em>course</em>.</h2>
-      <p class="lead">Two paths: Full ({meta['paths']['full']['minutes']} min) or Core ({meta['paths']['core']['minutes']} min). Every slide ahead carries your script in the right rail: Say, Do, Ask with expected answers, Debrief, Transition. This page is everything that happens before and around the room. Learners never see this edition.</p>
+      <p class="lead">Two paths: Full ({meta['paths']['full']['minutes']} min) or Core ({meta['paths']['core']['minutes']} min). Every slide ahead carries your script in the right rail: Say, Do, Ask with expected answers, Debrief, Transition. This page is everything that happens before and around the room. This page is everything that happens before and around the room. Learners never see this edition.</p>
+      <div class="hero__cta" style="margin-top:1.25rem"><a class="btn" href="guide.html" target="_blank" rel="noopener">Print the full facilitator guide</a></div>
       <div class="brief__grid">{prep_cols}
         <div class="brief__box"><h3>Materials</h3><ul>{mats}</ul></div>
         <div class="brief__box brief__wide"><h3>When things go sideways</h3>{cont}</div>
@@ -124,7 +125,7 @@ FAC_CSS = '''
   letter-spacing: .08em; font-size: .7rem; color: var(--vu-black); background: var(--vu-gold-flat);
   padding: .3rem .55rem; border-radius: 3px; margin-left: .9rem; white-space: nowrap; }
 @media (min-width: 1200px) {
-  body.fac .slide { display: grid; grid-template-columns: minmax(0,1fr) 350px; align-items: center; column-gap: 0; overflow: visible; }
+  body.fac .slide { display: grid; grid-template-columns: minmax(0,1fr) 350px; align-items: center; column-gap: 0; overflow-y: auto; overflow-x: hidden; }
   body.fac .slide > .wrap { grid-column: 1; }
   body.fac .slide > .hero__video, body.fac .slide > .hero__canvas, body.fac .slide > .hero__scrim { grid-column: 1 / -1; }
   body.fac .facnote { grid-column: 2; align-self: start; position: sticky; top: calc(var(--nav-h) + 16px);
@@ -180,3 +181,136 @@ s = s.replace('Coaching for Performance · A Vanderbilt learning experience',
 out = os.path.join(ROOT, 'facilitator', 'index.html')
 open(out, 'w').write(s)
 print(f'wrote {out}: {count} notes rails injected')
+
+# ---- 8. printable facilitator guide (facilitator/guide.html) ----
+def _g(t): return html.escape(str(t), quote=False)
+gm = notes['meta']
+gsecs = notes['sections']
+rows = ''.join(
+    f"<tr><td>{_g(x['title'])}</td><td>{x.get('minutes','')}</td><td>{x.get('coreMinutes') if x.get('coreMinutes') else '—'}</td></tr>"
+    for x in gsecs)
+full_total = sum(x.get('minutes', 0) for x in gsecs)
+core_total = sum(x.get('coreMinutes', 0) for x in gsecs)
+
+def _list(items): return ''.join(f'<li>{_g(i)}</li>' for i in items)
+prep_html = ''.join(
+    f"<h3>{lbl}</h3><ol>{_list(gm['prep'][key])}</ol>"
+    for lbl, key in (("A week before", "weekBefore"), ("The day before", "dayBefore"), ("30 minutes before", "thirtyMinBefore")))
+cont_html = ''.join(f"<p><b>If {_g(c['if'].rstrip('.'))}:</b> {_g(c['then'])}</p>" for c in gm['contingencies'])
+tough_html = ''.join(f"<p><b>Q: {_g(t['q'])}</b><br>{_g(t['a'])}</p>" for t in gm['toughQuestions'])
+tmpl_html = ''.join(f"<p><b>{_g(t['title'])}</b><br>{_g(t['body'])}</p>" for t in gm.get('templates', []))
+
+sec_html = ''
+for x in gsecs:
+    ask = x.get('ask')
+    ask_html = ''
+    if ask:
+        exp = ''.join(f'<li>{_g(e)}</li>' for e in ask.get('expect', []))
+        ask_html = (f"<p class='tagline ask'>Ask</p><p class='script'>&ldquo;{_g(ask['q'])}&rdquo;</p>"
+                    + (f"<p class='mini'><b>Expect:</b></p><ul>{exp}</ul>" if exp else '')
+                    + (f"<p class='mini'><b>Respond:</b> {_g(ask['respond'])}</p>" if ask.get('respond') else ''))
+    core = x.get('coreMinutes')
+    sec_html += f"""
+  <div class="sec">
+    <h2>{_g(x['title'])} <span class="mins">Full {x.get('minutes','–')} min · Core {core if core else 'skip'}</span></h2>
+    <p class="purpose">{_g(x.get('purpose',''))}</p>
+    {'<p class="tagline say">Say</p><p class="script">&ldquo;' + _g(x['say']) + '&rdquo;</p>' if x.get('say') else ''}
+    {'<p class="tagline">Do</p><ol>' + _list(x.get('facilitate', [])) + '</ol>' if x.get('facilitate') else ''}
+    {ask_html}
+    {'<p class="mini"><b>Debrief:</b> ' + _g(x['debrief']) + '</p>' if x.get('debrief') else ''}
+    {'<p class="mini"><b>Validate:</b> ' + _g(x['validate']) + '</p>' if x.get('validate') else ''}
+    {'<p class="mini"><b>Watch for:</b> ' + _g(x['watchFor']) + '</p>' if x.get('watchFor') else ''}
+    {'<p class="mini"><b>Transition:</b> &ldquo;' + _g(x['transition']) + '&rdquo;</p>' if x.get('transition') else ''}
+    {'<p class="mini core"><b>Core path:</b> ' + _g(x['coreNote']) + '</p>' if x.get('coreNote') else ''}
+  </div>"""
+
+guide = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facilitator Guide (printable) · {html.escape(notes['meta']['program'])}</title>
+<meta name="robots" content="noindex">
+<style>
+  @font-face {{ font-family: 'Libre Caslon Display'; font-weight: 400;
+    src: url('../assets/fonts/libre-caslon-display-latin-400-normal.woff2') format('woff2'); }}
+  @font-face {{ font-family: 'Inter'; font-weight: 400;
+    src: url('../assets/fonts/inter-latin-400-normal.woff2') format('woff2'); }}
+  @font-face {{ font-family: 'Inter'; font-weight: 600;
+    src: url('../assets/fonts/inter-latin-600-normal.woff2') format('woff2'); }}
+  @font-face {{ font-family: 'Antonio'; font-weight: 700;
+    src: url('../assets/fonts/antonio-latin-700-normal.woff2') format('woff2'); }}
+  * {{ box-sizing: border-box; }}
+  body {{ margin: 0; font-family: 'Inter', Arial, sans-serif; color: #1C1C1C; background: #fff;
+    font-size: 12.5px; line-height: 1.5; }}
+  .sheet {{ max-width: 860px; margin: 0 auto; padding: 28px 32px; }}
+  header {{ display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    border-bottom: 2px solid #CFAE70; padding-bottom: 14px; margin-bottom: 16px; }}
+  header img {{ width: 150px; }}
+  h1 {{ font-family: 'Libre Caslon Display', serif; font-weight: 400; font-size: 26px; margin: 0; }}
+  h1 em {{ font-style: italic; color: #946E24; }}
+  .eyebrow {{ font-family: 'Antonio', Impact, sans-serif; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; font-size: 10px; color: #946E24; margin: 0 0 6px; }}
+  h2 {{ font-family: 'Libre Caslon Display', serif; font-weight: 400; font-size: 18px;
+    margin: 0 0 4px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }}
+  h3 {{ font-family: 'Antonio', Impact, sans-serif; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; font-size: 12px; color: #946E24; margin: 14px 0 4px; }}
+  .mins {{ font-family: 'Antonio', Impact, sans-serif; font-size: 11px; color: #946E24;
+    letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }}
+  .sec {{ border: 1px solid #E4E4E4; border-left: 3px solid #CFAE70; border-radius: 4px;
+    padding: 12px 16px; margin-bottom: 12px; break-inside: avoid; }}
+  .purpose {{ font-weight: 600; margin: 2px 0 8px; }}
+  .tagline {{ font-family: 'Antonio', Impact, sans-serif; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; font-size: 10px; margin: 10px 0 2px; color: #1C1C1C;
+    background: #CFAE70; display: inline-block; padding: 2px 7px; border-radius: 2px; }}
+  .tagline.ask {{ background: #8BA18E; }}
+  .script {{ font-family: 'Libre Caslon Display', serif; font-style: italic; font-size: 13.5px;
+    margin: 4px 0 6px; }}
+  .mini {{ margin: 4px 0; color: #444; }}
+  .mini.core {{ border-top: 1px dashed #CFAE70; padding-top: 6px; }}
+  ol, ul {{ margin: 2px 0 8px; padding-left: 20px; }}
+  li {{ margin-bottom: 3px; }}
+  table {{ border-collapse: collapse; width: 100%; margin: 8px 0 16px; }}
+  th, td {{ border: 1px solid #E4E4E4; padding: 5px 9px; text-align: left; }}
+  th {{ font-family: 'Antonio', Impact, sans-serif; text-transform: uppercase; letter-spacing: .06em;
+    font-size: 10px; color: #946E24; }}
+  .front {{ border: 1px solid #E4E4E4; border-radius: 4px; padding: 12px 16px; margin-bottom: 12px;
+    break-inside: avoid; }}
+  .printbtn {{ position: fixed; right: 18px; top: 18px; background: #CFAE70; border: 0; border-radius: 4px;
+    padding: 9px 16px; font-family: Inter, Arial, sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; }}
+  @media print {{ .printbtn {{ display: none; }} body {{ font-size: 11px; }} .sheet {{ padding: 0; max-width: none; }} }}
+</style>
+</head>
+<body>
+<button class="printbtn" onclick="window.print()">Print / Save as PDF</button>
+<div class="sheet">
+  <header>
+    <div>
+      <p class="eyebrow">Vanderbilt · Learning Series · ATD facilitator guide · print edition</p>
+      <h1>{html.escape(notes['meta']['program'].split(' — ')[0].split(' · ')[0])}, the <em>facilitator guide</em></h1>
+    </div>
+    <img src="../assets/img/vu-lockup-black.png" alt="Vanderbilt University">
+  </header>
+
+  <div class="front">
+    <h3>Run of show</h3>
+    <table><tr><th>Screen</th><th>Full (min)</th><th>Core (min)</th></tr>{rows}
+    <tr><th>Total</th><th>{full_total}</th><th>{core_total}</th></tr></table>
+    <h3>Audience</h3><p>{_g(gm['audience'])}</p>
+    <h3>Room setup</h3><p>{_g(gm['roomSetup'])}</p>
+    <h3>Materials</h3><ul>{_list(gm['materials'])}</ul>
+    {prep_html}
+    <h3>When things go sideways</h3>{cont_html}
+    <h3>Tough questions, ready answers</h3>{tough_html}
+    {'<h3>Copy-paste templates</h3>' + tmpl_html if tmpl_html else ''}
+    <h3>After the session</h3><p>{_g(gm['postSession'])}</p>
+  </div>
+{sec_html}
+  <p class="mini" style="margin-top:14px;color:#777">Generated from facilitator/notes.json. The on-screen facilitator edition lives at ./ alongside this guide.</p>
+</div>
+</body>
+</html>
+"""
+gout = os.path.join(ROOT, 'facilitator', 'guide.html')
+open(gout, 'w').write(guide)
+print(f'wrote {gout}')
