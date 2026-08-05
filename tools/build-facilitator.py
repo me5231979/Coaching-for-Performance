@@ -91,28 +91,45 @@ for sid, sec in by_id.items():
 def esc2(t): return html.escape(t, quote=False)
 meta = notes['meta']
 prep_cols = ''
-for label, key in (("A week before","weekBefore"),("The day before","dayBefore"),("30 minutes before","thirtyMinBefore")):
+PREP_SUBS = {"weekBefore": "Learn the course by taking it",
+             "dayBefore": "Test everything a learner touches",
+             "thirtyMinBefore": "Set the room, set the tone"}
+for n, (label, key) in enumerate((("A week before","weekBefore"),("The day before","dayBefore"),("30 minutes before","thirtyMinBefore")), start=1):
     items = ''.join(f'<li>{esc2(x)}</li>' for x in meta['prep'][key])
-    prep_cols += f'<div class="brief__box"><h3>{label}</h3><ol>{items}</ol></div>'
+    prep_cols += (f'<div class="brief__box"><h3>0{n} · {label}</h3>'
+                  f'<p class="brief__sub">{PREP_SUBS[key]}</p><ol class="checks">{items}</ol></div>')
 mats = ''.join(f'<li>{esc2(x)}</li>' for x in meta['materials'])
 cont = ''.join(f'<div class="brief__row"><b>If {esc2(c["if"]).rstrip(".")}:</b> {esc2(c["then"])}</div>' for c in meta['contingencies'])
 tough = ''.join(f'<details class="brief__q"><summary>{esc2(t["q"])}</summary><p>{esc2(t["a"])}</p></details>' for t in meta['toughQuestions'])
 tmpl = ''.join(f'<details class="brief__q"><summary>{esc2(t["title"])}</summary><p>{esc2(t["body"])}</p></details>' for t in meta.get('templates', []))
-tmpl_box = f'<div class="brief__box brief__wide"><h3>Copy-paste templates</h3>{tmpl}</div>' if tmpl else ''
+tmpl_box = f'<div class="brief__box brief__wide"><h3>07 · Copy-paste templates</h3><p class="brief__sub">Copy, swap the brackets, send</p>{tmpl}</div>' if tmpl else ''
+inv = (meta.get('templates') or [{}])[0]
+briefing_rail = ('<aside class="facnote" aria-label="Facilitator notes">'
+  '<div class="facnote__head"><span>Facilitator script</span>'
+  + f'<span class="facnote__time">Full {meta["paths"]["full"]["minutes"]} min · Core {meta["paths"]["core"]["minutes"]}</span>'
+  + '<button class="facnote__hide" type="button" aria-label="Hide the facilitator script">Hide</button></div>'
+  + '<p class="facnote__purpose">Run this course</p>'
+  + '<p class="facnote__mini">The pre-work invite. Send it with the calendar invite a week out; swap anything in [brackets] and it is ready.</p>'
+  + '<span class="facnote__tag t-say">Invite</span>'
+  + f'<div class="facnote__invite">{esc2(inv.get("body", ""))}</div>'
+  + '</aside>') if inv.get('body') else ''
 briefing = f"""  <section class="slide on-dark" id="s-briefing" data-title="Facilitator briefing">
     <div class="wrap wrap-wide">
-      <p class="eyebrow">Facilitator briefing · Read before you teach</p>
-      <h2 class="h2">Run this <em>course</em>.</h2>
-      <p class="lead">Two paths: Full ({meta['paths']['full']['minutes']} min) or Core ({meta['paths']['core']['minutes']} min). Every slide ahead carries your script in the right rail: Say, Do, Ask with expected answers, Debrief, Transition. This page is everything that happens before and around the room. This page is everything that happens before and around the room. Learners never see this edition.</p>
-      <div class="hero__cta" style="margin-top:1.25rem"><a class="btn" href="guide.html" target="_blank" rel="noopener">Print the full facilitator guide</a></div>
+      <p class="brief__youarehere">You are here: the facilitator prep page. Learners start on the next page.</p>
+      <p class="eyebrow">Run this course / 00 · Facilitator only</p>
+      <h2 class="h2">Before the room <em>fills</em>.</h2>
+      <p class="lead">Two paths: Full ({meta['paths']['full']['minutes']} min) or Core ({meta['paths']['core']['minutes']} min). Every page ahead carries your script in the right rail: Say, Do, Ask with expected answers, Debrief, and a Transition into the next page, with the Core cut named at the bottom of each card. This page is everything that happens before and around the room. Learners never see this edition; the welcome QR on the next page sends them to their own.</p>
+      <div class="hero__cta" style="margin-top:1.25rem"><a class="btn" href="guide.html" target="_blank" rel="noopener">Print the facilitator guide &#128424;</a></div>
+      <p class="brief__printnote">One paper packet: this prep page, the run of show, the tough-questions bank, and every section script with its slide pictured beside the notes. Print it or choose Save as PDF.</p>
       <div class="brief__grid">{prep_cols}
-        <div class="brief__box"><h3>Materials</h3><ul>{mats}</ul></div>
-        <div class="brief__box brief__wide"><h3>When things go sideways</h3>{cont}</div>
-        <div class="brief__box brief__wide"><h3>Tough questions, ready answers</h3>{tough}</div>
+        <div class="brief__box"><h3>04 · Materials</h3><p class="brief__sub">Have these in hand</p><ul class="checks">{mats}</ul></div>
+        <div class="brief__box brief__wide"><h3>05 · When things go sideways</h3><p class="brief__sub">If it breaks, you have a move</p>{cont}</div>
+        <div class="brief__box brief__wide"><h3>06 · Tough questions, ready answers</h3><p class="brief__sub">Say each answer out loud once before you teach</p>{tough}</div>
         {tmpl_box}
       </div>
       <p class="why" style="margin-top:1.5rem"><b>After the session:</b> {esc2(meta['postSession'])}</p>
     </div>
+    {briefing_rail}
   </section>
 
 """
@@ -159,8 +176,7 @@ FAC_CSS = '''
 .facnote__script { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: .88rem; color: #fff; }
 .facnote__mini { margin: .25rem 0 0; font-size: .78rem; color: rgba(255,255,255,.75); }
 .brief__grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
-@media (min-width: 980px) { .brief__grid { grid-template-columns: repeat(2, 1fr); }
-  body.fac #s-briefing { grid-template-columns: 1fr !important; } }
+@media (min-width: 980px) { .brief__grid { grid-template-columns: repeat(2, 1fr); } }
 .brief__box { background: #262626; border: 1px solid rgba(207,174,112,.3); border-radius: 6px; padding: 1.1rem 1.25rem; font-size: .92rem; }
 .brief__box h3 { font-family: var(--font-condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
   font-size: .8rem; color: var(--vu-gold-flat); margin-bottom: .6rem; }
@@ -171,6 +187,15 @@ FAC_CSS = '''
 .brief__q { border-bottom: 1px solid rgba(255,255,255,.08); padding: .4rem 0; }
 .brief__q summary { cursor: pointer; font-weight: 500; color: #fff; }
 .brief__q p { margin: .4rem 0 .2rem; color: rgba(255,255,255,.8); font-size: .9rem; }
+.brief__youarehere { font-family: var(--font-condensed); font-weight: 700; text-transform: uppercase;
+  letter-spacing: .09em; font-size: .68rem; color: rgba(255,255,255,.55); margin-bottom: 1rem; }
+.brief__sub { font-weight: 600; color: #fff; margin: 0 0 .6rem; font-size: 1rem; }
+.brief__printnote { color: rgba(255,255,255,.7); font-size: .9rem; max-width: 62ch; margin-top: .75rem; }
+.brief__box ol.checks, .brief__box ul.checks { list-style: none; padding-left: 0; }
+.brief__box .checks li { position: relative; padding-left: 1.4rem; }
+.brief__box .checks li::before { content: "\\2713"; position: absolute; left: 0; color: var(--vu-gold-flat); font-weight: 700; }
+.facnote__invite { border: 1px solid rgba(255,255,255,.18); border-radius: 5px; padding: .8rem .9rem;
+  margin-top: .5rem; font-size: .8rem; color: rgba(255,255,255,.85); white-space: pre-wrap; }
 /* hide/show the facilitator script */
 .facnote__hide { font-family: var(--font-body, Inter, sans-serif); font-weight: 600; font-size: .72rem;
   color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.3);
