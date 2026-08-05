@@ -42,7 +42,8 @@
     // excluded margin — reveal them directly
     requestAnimationFrame(function () {
       revEls.forEach(function (el) {
-        if (el.getBoundingClientRect().top < window.innerHeight) {
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.left < window.innerWidth && r.right > 0) {
           el.classList.add('in'); revObs.unobserve(el);
         }
       });
@@ -663,12 +664,15 @@
 
   function goTo(i) {
     i = Math.max(0, Math.min(slides.length - 1, i));
-    slides[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    slides[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', inline: 'start', block: 'nearest' });
   }
+  var barTitle = $('#barTitle');
   function setActive(i) {
     current = i;
     dots.forEach(function (d, di) { d.setAttribute('aria-current', String(di === i)); });
     if (counter) counter.textContent = (i + 1) + ' / ' + slides.length;
+    if (barTitle) barTitle.textContent = slides[i].getAttribute('data-title') || '';
+    if (typeof checkHint === 'function') checkHint();
     $$('.nav__links a').forEach(function (a) {
       var href = a.getAttribute('href');
       a.setAttribute('aria-current', String(href === '#' + slides[i].id));
@@ -684,11 +688,52 @@
   }
   setActive(0);
 
-  // progress bar
-  window.addEventListener('scroll', function () {
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    if (bar) bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
-  }, { passive: true });
+  // progress bar follows the deck's horizontal position
+  var deckEl = $('.deck');
+  if (deckEl) {
+    deckEl.addEventListener('scroll', function () {
+      var w = deckEl.scrollWidth - deckEl.clientWidth;
+      if (bar) bar.style.width = (w > 0 ? (deckEl.scrollLeft / w) * 100 : 0) + '%';
+      nav.classList.toggle('scrolled', deckEl.scrollLeft > 40);
+    }, { passive: true });
+  }
+
+  // "scroll for more" indicator
+  var hint = $('#scrollHint');
+  function checkHint() {
+    if (!hint || !slides[current]) return;
+    var s = slides[current];
+    var need = s.scrollHeight - s.clientHeight > 56;
+    var atEnd = s.scrollTop + s.clientHeight >= s.scrollHeight - 24;
+    hint.classList.toggle('show', need && !atEnd);
+  }
+  if (hint) {
+    hint.addEventListener('click', function () {
+      var s = slides[current];
+      s.scrollBy({ top: s.clientHeight * 0.7, behavior: reduce ? 'auto' : 'smooth' });
+    });
+    slides.forEach(function (s) { s.addEventListener('scroll', checkHint, { passive: true }); });
+    window.addEventListener('resize', checkHint);
+    setTimeout(checkHint, 400);
+  }
+
+  // in-page anchor links jump the horizontal deck
+  $$('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      var target = document.getElementById(id);
+      if (!target) return;
+      var slide = target.closest ? (target.closest('.slide') || target) : target;
+      if (slides.indexOf(slide) > -1) {
+        e.preventDefault();
+        goTo(slides.indexOf(slide));
+      } else if (id === 'top') {
+        e.preventDefault();
+        goTo(0);
+      }
+    });
+  });
 
   // keyboard
   document.addEventListener('keydown', function (e) {

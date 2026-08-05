@@ -23,7 +23,7 @@
 <link rel="preload" href="../assets/fonts/libre-caslon-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="../assets/css/styles.css?v=1">
+<link rel="stylesheet" href="../assets/css/styles.css?v=11">
 <style>
   /* skill pills (course-level) */
   .skills { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: 1.5rem; }
@@ -115,13 +115,17 @@
   </nav>
 </header>
 
-<!-- deck dot rail + control bar -->
-<div class="dots" id="dots" role="navigation" aria-label="Slide navigation"></div>
-<div class="deckbar" role="group" aria-label="Presentation controls">
-  <button id="deckPrev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
-  <span class="deckbar__count" id="deckCount">1 / 15</span>
-  <button id="deckNext" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+<!-- bottom navigation bar -->
+<div class="bottombar" role="group" aria-label="Presentation controls">
+  <span class="bottombar__title" id="barTitle"></span>
+  <div class="dots" id="dots" role="navigation" aria-label="Slide navigation"></div>
+  <div class="bottombar__ctrl">
+    <span class="bottombar__count" id="deckCount">1 / 15</span>
+    <button id="deckPrev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button id="deckNext" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+  </div>
 </div>
+<button class="scrollhint" id="scrollHint" type="button" aria-label="Scroll for more on this screen">Scroll for more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
 
 <main class="deck" id="top">
 
@@ -742,12 +746,7 @@
         <a class="btn btn--ghost" href="#s-recap">Retake the quiz</a>
       </div>
     </div>
-    <aside class="facnote" aria-label="Facilitator notes"><div class="facnote__head"><span>Facilitator</span><span>Full 3 min · Core 3</span></div><p class="facnote__purpose">Convert plans into public commitments, capture the Level 1 reaction check, and close the loop on the one next step.</p><div class="facnote__blk"><span class="facnote__tag t-say">Say</span><p class="facnote__script">&ldquo;Here's the whole session in one breath: the best managers ask, the structure is GROW, the questions are open and clean, the input is feedforward, and the judgment is matching the mode to the moment. You have a model, an opening question, and a date. Before you go: which model, and which day? Say it out loud.&rdquo;</p></div><div class="facnote__blk"><span class="facnote__tag t-do">Do</span><ol class="facnote__steps"><li>Read the featured card: the one next step is THE coaching conversation, within 7 days.</li><li>Run the fist-to-five (Level 1): 'On a fist to five, how ready do you feel to run your coaching conversation?' Scan and remember the number for your session log.</li><li>Run the commitment round, popcorn style: model and day, out loud or in chat. Opening questions from volunteers if energy is high.</li><li>Point at the cheat sheet and worksheet buttons.</li><li>Tell them about the 7-day pulse and the 30-day ratio re-poll, then land the last line and stop on time.</li></ol></div><div class="facnote__blk"><span class="facnote__tag t-ask">Ask</span><p class="facnote__script">&ldquo;Around the room, one line each: which model, and which day?&rdquo;</p><p class="facnote__mini">Expect:</p><ul class="facnote__steps"><li>'GROW, Thursday morning'</li><li>'OSKAR, tomorrow's one-on-one'</li><li>Some hesitation or 'next week sometime'</li></ul><p class="facnote__mini">Respond: Thank each one, no commentary. For hesitators: 'Name just the day; the plan already knows the rest.' If someone isn't ready, let it go gracefully; the 7-day pulse gives them a second chance.</p></div><div class="facnote__blk"><span class="facnote__tag t-deb">Debrief</span><p class="facnote__mini">The session's success metric isn't in this room; it's the ratio re-poll in 30 days. The conversations this week are how the number moves.</p></div><p class="facnote__meta"><b>Validate:</b> Fist-to-five mostly 3+ (Level 1); a majority state a model-and-day out loud or in chat. Count both; with the pulse and the 30-day ratio, that's your evidence chain.</p><p class="facnote__meta"><b>Watch for:</b> Commitment dodges ('when things calm down'). Convert one or two gently: 'Which day?' Things never calm down; calendars do.</p><div class="facnote__blk"><span class="facnote__tag t-tra">Transition</span><p class="facnote__script">&ldquo;Go ask the question. And when their answer surprises you, and it will, say the two words: what else?&rdquo;</p></div><p class="facnote__meta facnote__core"><b>60-min core:</b> Core: keep at full length; the commitment round IS the ending.</p></aside>
-  </section>
-
-</main>
-
-<!-- ============ FOOTER ============ -->
+  <!-- ============ FOOTER ============ -->
 <footer class="footer" aria-labelledby="footHead">
   <div class="wrap">
     <div class="footer__grid">
@@ -772,6 +771,7 @@
           <li><a href="#s-recap">Knowledge Check</a></li>
           <li><a href="#s-plan">My Coaching Plan</a></li>
           <li><a href="#s-close">Your Next Step</a></li>
+          <li><a href="web/">Self-paced version</a></li>
           <li><a href="https://me5231979.github.io/Course_Library/">Course Library</a></li>
           <li><a href="#top">Start Over</a></li>
         </ul>
@@ -783,8 +783,14 @@
     </div>
   </div>
 </footer>
+    <aside class="facnote" aria-label="Facilitator notes"><div class="facnote__head"><span>Facilitator</span><span>Full 3 min · Core 3</span></div><p class="facnote__purpose">Convert plans into public commitments, capture the Level 1 reaction check, and close the loop on the one next step.</p><div class="facnote__blk"><span class="facnote__tag t-say">Say</span><p class="facnote__script">&ldquo;Here's the whole session in one breath: the best managers ask, the structure is GROW, the questions are open and clean, the input is feedforward, and the judgment is matching the mode to the moment. You have a model, an opening question, and a date. Before you go: which model, and which day? Say it out loud.&rdquo;</p></div><div class="facnote__blk"><span class="facnote__tag t-do">Do</span><ol class="facnote__steps"><li>Read the featured card: the one next step is THE coaching conversation, within 7 days.</li><li>Run the fist-to-five (Level 1): 'On a fist to five, how ready do you feel to run your coaching conversation?' Scan and remember the number for your session log.</li><li>Run the commitment round, popcorn style: model and day, out loud or in chat. Opening questions from volunteers if energy is high.</li><li>Point at the cheat sheet and worksheet buttons.</li><li>Tell them about the 7-day pulse and the 30-day ratio re-poll, then land the last line and stop on time.</li></ol></div><div class="facnote__blk"><span class="facnote__tag t-ask">Ask</span><p class="facnote__script">&ldquo;Around the room, one line each: which model, and which day?&rdquo;</p><p class="facnote__mini">Expect:</p><ul class="facnote__steps"><li>'GROW, Thursday morning'</li><li>'OSKAR, tomorrow's one-on-one'</li><li>Some hesitation or 'next week sometime'</li></ul><p class="facnote__mini">Respond: Thank each one, no commentary. For hesitators: 'Name just the day; the plan already knows the rest.' If someone isn't ready, let it go gracefully; the 7-day pulse gives them a second chance.</p></div><div class="facnote__blk"><span class="facnote__tag t-deb">Debrief</span><p class="facnote__mini">The session's success metric isn't in this room; it's the ratio re-poll in 30 days. The conversations this week are how the number moves.</p></div><p class="facnote__meta"><b>Validate:</b> Fist-to-five mostly 3+ (Level 1); a majority state a model-and-day out loud or in chat. Count both; with the pulse and the 30-day ratio, that's your evidence chain.</p><p class="facnote__meta"><b>Watch for:</b> Commitment dodges ('when things calm down'). Convert one or two gently: 'Which day?' Things never calm down; calendars do.</p><div class="facnote__blk"><span class="facnote__tag t-tra">Transition</span><p class="facnote__script">&ldquo;Go ask the question. And when their answer surprises you, and it will, say the two words: what else?&rdquo;</p></div><p class="facnote__meta facnote__core"><b>60-min core:</b> Core: keep at full length; the commitment round IS the ending.</p></aside>
+  </section>
+
+</main>
+
+
 
 <script src="../assets/js/qrcode.js?v=1"></script>
-<script src="../assets/js/main.js?v=1"></script>
+<script src="../assets/js/main.js?v=11"></script>
 </body>
 </html>
